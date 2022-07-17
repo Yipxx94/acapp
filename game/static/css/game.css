@@ -1,0 +1,34 @@
+.ac-game-menu {
+    width: 100%;
+    height: 100%;
+    background-image: url("/static/image/menu/background.png");
+    background-size: 100% 100%;
+    user-select: none;
+}
+
+.ac-game-menu-filed {
+    width: 20vw;
+    position: relative;
+    top: 40vh;
+    left: 19vw;
+}
+
+.ac-game-menu-filed-item {
+    color: white;
+    height: 6vh;
+    width: 18vw;
+    font-size: 6vh;
+    font-style: normal;
+    padding: 2vh;
+    text-align: center;
+    font-family: 站酷小薇LOGO体;
+    background-color: rgba(39,21,28,0.7);
+    border-radius: 25px;
+    letter-spacing: 0.5vw;
+    cursor: pointer;
+}
+
+.ac-game-menu-filed-item:hover {
+    transform: scale(1.2);
+    transition: 100ms;
+}
