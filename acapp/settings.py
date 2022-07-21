@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-t$_re=hi-^zx5moqhaqo@%x=w)(sa_64l86(%48(8o6wla0kzy'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["47.99.76.74", "app969.acapp.acwing.com.cn", "www.game.yexxweb.com"]
+ALLOWED_HOSTS = ['47.99.76.74', 'app2848.acapp.acwing.com.cn', 'www.game.yexxweb.com']
 
 
 # Application definition
@@ -39,11 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+#    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+#    'corsheaders.middleware.CorsMiddleware',    # 增加
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -129,3 +131,37 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# 添加
+CSRF_TRUSTED_ORIGINS = ['app2848.acapp.acwing.com.cn', 'www.game.yexxweb.com']
+
+#跨域增加忽略
+#CORS_ALLOW_CREDENTIALS = True  # 允许携带Cookie
+#CORS_ORIGIN_ALLOW_ALL = True
+#CORS_ORIGIN_WHITELIST = (
+#    '*'
+#)
+
+#CORS_ALLOW_METHODS = (
+#    'DELETE',
+#    'GET',
+#    'OPTIONS',
+#    'PATCH',
+#    'POST',
+#    'PUT',
+#    'VIEW',
+#)
+
+#CORS_ALLOW_HEADERS = (
+#    'XMLHttpRequest',
+#    'X_FILENAME',
+#    'accept-encoding',
+#    'authorization',
+#    'content-type',
+#    'dnt',
+#    'origin',
+#    'user-agent',
+#    'x-csrftoken',
+#    'x-requested-with',
+#    'Pragma',
+#)

@@ -22,6 +22,7 @@ class AcGameMenu {
     </div>
 </div>
 `);    // 创建一个HTML对象，menu
+        this.$menu.hide();
         this.root.$ac_game.append(this.$menu);
         // 添加按钮
         this.$single_mode = this.$menu.find('.ac-game-menu-field-item-single-mode');
@@ -50,6 +51,7 @@ class AcGameMenu {
         });
         this.$settings.click(function() {
             console.log("click settings mode");
+            outer.root.settings.logout_on_remote();
         });
     }
 

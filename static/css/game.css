@@ -1,3 +1,122 @@
+.ac-game-settings {
+    width: 100%;
+    height: 100%;
+    background-image: url("/static/image/menu/background.png");
+    background-size: 100% 100%;
+    user-select: none;
+}
+
+.ac-game-settings-login {
+    height: 45vh;
+    width: 20vw;
+    position: relative;    /* 居中 */
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    background-color: rgba(0, 0, 0, 0.7);
+    border_radius: 5px;    /* 圆角 */
+}
+
+.ac-game-settings-title {
+    color: white;
+    font-size: 3vh;
+    font-family: 站酷小薇LOGO体;
+    text-align: center;
+    height: 4vh;
+    padding-top: 2vh;    /* 距离上方的距离 */
+    margin-bottom: 1vh;    /* 距离下方的距离 */
+}
+
+.ac-game-settings-username {
+    display: block;
+    height: 7vh;
+}
+
+.ac-game-settings-item {
+    width: 100%;
+    height: 100%;
+}
+
+.ac-game-settings-item > input {
+    width: 90%;
+    line-height: 3vh;
+    position: relative;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+}
+
+.ac-game-settings-password {
+    display: block;
+    height: 7vh;
+}
+
+.ac-game-settings-submit {
+    display: block;
+    height: 7vh;
+}
+
+.ac-game-settings-item > button {
+    color: white;
+    width: 90%;
+    line-height: 3vh;
+    position: relative;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    background-color: #006b1b;
+    border-radius: 5px;
+}
+
+.ac-game-settings-error-message {
+    color: red;
+    font-size: 0.8vh;
+    display: inline;
+    float: left;
+    padding-left: 1vw;
+}
+
+.ac-game-settings-option {
+    color: white;
+    font-size: 2vh;
+    display: inline;
+    float: right;
+    padding-right: 1vw;
+    cursor: pointer;    /* 鼠标移上去变成小手的形状 */
+}
+
+.ac-game-settings-acwing {
+    display: block;
+    height: 7vh;
+}
+
+.ac-game-settings-acwing > img {
+    position: relative;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    cursor: pointer;
+}
+
+.ac-game-settings-acwing > div {
+    color: white;
+    font-size: 1.5vh;
+    text-align: center;
+}
+
+
+.ac-game-settings-register {
+    height: 52vh;
+    width: 20vw;
+    position: relative;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    background-color: rgba(0, 0, 0, 0.7);
+    border_radius: 5px;
+}
+
+
 .ac-game-menu {
     width: 100%;
     height: 100%;
