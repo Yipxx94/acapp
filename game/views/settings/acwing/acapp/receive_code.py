@@ -12,7 +12,7 @@ def receive_code(request):
         return JsonResponse({
             'result': "apply failed",
             'errcode': data['errcode'],
-            'errmag': data['errmag'],
+            'errmsg': data['errmsg'],
         })
     code = data.get('code')
     state = data.get('state')
@@ -57,7 +57,7 @@ def receive_code(request):
         username += str(randint(0, 9))
 
     user = User.objects.create(username=username)
-    player = Player.objects.create(user=user, photo=photo)
+    player = Player.objects.create(user=user, photo=photo, openid=openid)
 
     return JsonResponse({
         'result': "success",

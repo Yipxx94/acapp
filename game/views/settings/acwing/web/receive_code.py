@@ -45,7 +45,7 @@ def receive_code(request):
         username += str(randint(0, 9))
 
     user = User.objects.create(username=username)
-    player = Player.objects.create(user=user, photo=photo)
+    player = Player.objects.create(user=user, photo=photo, openid=openid)
 
     login(request, user)
 
