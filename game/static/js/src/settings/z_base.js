@@ -67,7 +67,6 @@ class Settings {
                 <button> 注册 </button>
             </div>
         </div>
-        </br>
         <div class="ac-game-settings-option">
             登录
         </div>
@@ -100,6 +99,7 @@ class Settings {
 
         this.$register.hide();
 
+        this.$acwing_login = this.$settings.find('.ac-game-settings-acwing img');
         this.root.$ac_game.append(this.$settings);
 
         this.start();
@@ -110,9 +110,27 @@ class Settings {
         this.add_listening_events();
     }
 
+    acwing_login() {
+        $.ajax({
+           url: "https://www.game.yexxweb.com/settings/acwing/web/apply_code/",
+            type: "GET",
+            success: function(resp) {
+               console.log(resp);
+               if (resp.result === "success")
+                   console.log(resp);
+                   window.location.replace(resp.apply_code_url);    // 将当前页面重定向
+            }
+        });
+    }
+
     add_listening_events() {
+        let outer = this;
         this.add_listening_events_login();
         this.add_listening_events_register();
+
+        this.$acwing_login.click(function() {
+            outer.acwing_login();
+        });
     }
 
     add_listening_events_login() {
@@ -146,8 +164,8 @@ class Settings {
         this.$login_error_message.empty();
 
         $.ajax({
-//            url: "https://app2848.acapp.acwing.com.cn/settings/login",
-            url: "https://www.game.yexxweb.com/settings/login",
+//            url: "https://app2848.acapp.acwing.com.cn/settings/login/",
+            url: "https://www.game.yexxweb.com/settings/login/",
             type: "GET",
             data: {
                 username: username,
@@ -171,7 +189,7 @@ class Settings {
         this.$register_error_message.empty();
 
         $.ajax({
-            url: "https://www.game.yexxweb.com/settings/register",
+            url: "https://www.game.yexxweb.com/settings/register/",
             type: "GET",
             data: {
                 username: username,
@@ -193,7 +211,7 @@ class Settings {
             return false;
 
         $.ajax({
-            url: "https://www.game.yexxweb.com/settings/logout",
+            url: "https://www.game.yexxweb.com/settings/logout/",
             type: "GET",
             success: function(resp) {
                 console.log(resp);
@@ -218,7 +236,7 @@ class Settings {
 
         $.ajax({    // 从浏览器向服务器发送一个请求
 //            url: "https://app2848.acapp.acwing.com.cn/settings/getinfo",
-            url: "https://www.game.yexxweb.com/settings/getinfo",
+            url: "https://www.game.yexxweb.com/settings/getinfo/",
             type: "GET",
             data: {
                 platform: outer.platform,

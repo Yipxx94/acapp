@@ -135,6 +135,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # 添加
 CSRF_TRUSTED_ORIGINS = ['app2848.acapp.acwing.com.cn', 'www.game.yexxweb.com']
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    },
+}
+USER_AGENTS_CACHE = 'default'
+
 #跨域增加忽略
 #CORS_ALLOW_CREDENTIALS = True  # 允许携带Cookie
 #CORS_ORIGIN_ALLOW_ALL = True
