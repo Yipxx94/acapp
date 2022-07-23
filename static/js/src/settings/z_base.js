@@ -34,11 +34,14 @@ class Settings {
             注册
         </div>
         </br>
-        <div class="ac-game-settings-acwing">
-            <img width="35" src="https://app2848.acapp.acwing.com.cn/static/image/settings/acwing_logo.png">
-            </br>
-            </br>
-            <div> AcWing 一键登录 </div>
+        </br>
+        <div class="ac-game-settings-option-second">
+            更多登录方式：
+        </div>
+        </br>
+        <div class="ac-game-settings-third-login">
+            <img width="35" src="https://www.game.yexxweb.com/static/image/settings/acwing_logo.png" class="acwing-login">
+            <img width="45" src="https://www.game.yexxweb.com/static/image/settings/qq_logo.png" class="qq-login">
         </div>
     </div>
     <div class="ac-game-settings-register">
@@ -60,22 +63,25 @@ class Settings {
                 <input type="password" placeholder="确认密码">
             </div>
         </div>
-        <div class="ac-game-settings-error-message">
-        </div>
         <div class="ac-game-settings-submit">
             <div class="ac-game-settings-item">
                 <button> 注册 </button>
             </div>
         </div>
+        <div class="ac-game-settings-error-message">
+        </div>
         <div class="ac-game-settings-option">
             登录
         </div>
         </br>
-        <div class="ac-game-settings-acwing">
-            <img width="35" src="https://app2848.acapp.acwing.com.cn/static/image/settings/acwing_logo.png">
-            </br>
-            </br>
-            <div> AcWing 一键登录 </div>
+        </br>
+        <div class="ac-game-settings-option-second">
+            更多登录方式：
+        </div>
+        </br>
+        <div class="ac-game-settings-third-login">
+            <img width="35" src="https://www.game.yexxweb.com/static/image/settings/acwing_logo.png" class="acwing-login">
+            <img width="45" src="https://www.game.yexxweb.com/static/image/settings/qq_logo.png" class="qq-login">
         </div>
     </div>
 </div>
@@ -99,7 +105,9 @@ class Settings {
 
         this.$register.hide();
 
-        this.$acwing_login = this.$settings.find('.ac-game-settings-acwing img');
+        this.$acwing_login = this.$settings.find('.acwing-login');
+        this.$qq_login = this.$settings.find('.qq-login');
+
         this.root.$ac_game.append(this.$settings);
 
         this.start();
@@ -115,6 +123,20 @@ class Settings {
         }
     }
 
+    add_listening_events() {
+        let outer = this;
+        this.add_listening_events_login();
+        this.add_listening_events_register();
+
+        this.$acwing_login.click(function() {
+            outer.acwing_login();
+        });
+
+        this.$qq_login.click(function() {
+            console.log("click qq login");
+        });
+    }
+
     acwing_login() {
         $.ajax({
            url: "https://www.game.yexxweb.com/settings/acwing/web/apply_code/",
@@ -128,14 +150,8 @@ class Settings {
         });
     }
 
-    add_listening_events() {
-        let outer = this;
-        this.add_listening_events_login();
-        this.add_listening_events_register();
+    qq_login() {
 
-        this.$acwing_login.click(function() {
-            outer.acwing_login();
-        });
     }
 
     add_listening_events_login() {
