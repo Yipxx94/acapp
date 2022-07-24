@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['47.99.76.74', 'app2848.acapp.acwing.com.cn', 'www.game.yexxweb
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'game.apps.GameConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -135,6 +136,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # 添加
 CSRF_TRUSTED_ORIGINS = ['app2848.acapp.acwing.com.cn', 'www.game.yexxweb.com']
 
+# django_redis 配置
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
@@ -145,6 +147,19 @@ CACHES = {
     },
 }
 USER_AGENTS_CACHE = 'default'
+
+# channels_redis 配置
+ASGI_APPLICATION = 'acapp.asgi.application'
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
+
+ROOM_CAPACITY = 3
 
 #跨域增加忽略
 #CORS_ALLOW_CREDENTIALS = True  # 允许携带Cookie
