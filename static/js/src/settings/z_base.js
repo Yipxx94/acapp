@@ -224,22 +224,26 @@ class Settings {
                 else
                     outer.$register_error_message.html(resp.result);
             }
-        })
+        });
     }
 
     logout_on_remote() {    // 在远程服务器上登出
         if (this.platform === "ACAPP")
-            return false;
-
-        $.ajax({
-            url: "https://www.game.yexxweb.com/settings/logout/",
-            type: "GET",
-            success: function(resp) {
-                console.log(resp);
-                if (resp.result === "success")
-                    location.reload();
-            }
-        })
+        {
+            this.root.AcWingOS.api.window.close();
+        }
+        else if (this.platform === "WEB")
+        {
+            $.ajax({
+                url: "https://www.game.yexxweb.com/settings/logout/",
+                type: "GET",
+                success: function(resp) {
+                    console.log(resp);
+                    if (resp.result === "success")
+                        location.reload();
+                }
+            });
+        }
     }
 
     register() {    // 打开注册界面

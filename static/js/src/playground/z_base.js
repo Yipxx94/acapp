@@ -27,7 +27,6 @@ class AcGamePlayground {
     }
 
     resize() {    // 联机对战，保持窗口16:9的比例不变
-        console.log("resize");
         this.width = this.$playground.width();
         this.height = this.$playground.height();
         let unit = Math.min(this.width / 16, this.height / 9);
@@ -40,6 +39,8 @@ class AcGamePlayground {
     }
 
     show(mode) {    // 打开 playground 界面
+        this.mode = mode;
+
         let outer = this;
         this.$playground.show();
 
@@ -49,6 +50,10 @@ class AcGamePlayground {
         this.width = this.$playground.width();
         this.height = this.$playground.height();
         this.game_map = new GameMap(this);
+
+        this.state = "waiting";    // waiting -> fighting -> over
+        this.notice_board = new NoticeBoard(this);
+        this.player_cnt = 0;
 
         this.resize();
 
