@@ -4,10 +4,10 @@ from django.conf import settings
 from django.core.cache import cache
 
 class MultiPlayer(AsyncWebsocketConsumer):
-    async def connect(self):    # 当web端通过我们刚刚写的链接试图与我们建立连接时我们会执行这个函数
+    async def connect(self):    # 当前端通过我们刚刚写的链接试图与我们建立连接时我们会执行这个函数
         self.room_name = None
 
-        for i in range(1000):    # 枚举每个房间，暂定共有1000个房间
+        for i in range(100000):    # 枚举每个房间，暂定共有1000个房间
             name = "room-%d" % (i)
             if not cache.has_key(name) or len(cache.get(name)) < settings.ROOM_CAPACITY:
                 self.room_name = name
@@ -110,6 +110,18 @@ class MultiPlayer(AsyncWebsocketConsumer):
             }
         )
 
+    async def message(self, data):
+        await self.channel_layer.group_send(
+            self.room_name,
+            {
+                'type': "group_send_event",
+                'event': "message",
+                'uuid': data['uuid'],
+                'username': data['username'],
+                'text': data['text'],
+            }
+        )
+
     async def receive(self, text_data):
         data = json.loads(text_data)
         event = data['event']
@@ -123,3 +135,5 @@ class MultiPlayer(AsyncWebsocketConsumer):
             await self.attack(data)
         elif event == "flash":
             await self.flash(data)
+        elif event == "message":
+            await self.message(data)

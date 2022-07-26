@@ -176,3 +176,34 @@
     top: 50%;
     left: 50%;
 }
+
+.ac-game-chat-field-history {
+    position: absolute;
+    top: 66%;
+    left: 15%;
+    transform: translate(-50%, -50%);
+    width: 20%;
+    height: 32%;
+    color: white;
+    font-size: 2vh;
+    font-family: 方正舒体;
+    padding: 5px;
+    overflow: auto;
+}
+
+.ac-game-chat-field-history::-webkit-scrollbar {
+    width: 0;
+}
+
+.ac-game-chat-field-input {
+    position: absolute;
+    top: 86%;
+    left: 15%;
+    transform: translate(-50%, -50%);
+    width: 20%;
+    height: 3vh;
+    color: white;
+    font-size: 2vh;
+    font-family: 方正舒体;
+    background-color: rgba(222, 225, 230, 0.2);
+}

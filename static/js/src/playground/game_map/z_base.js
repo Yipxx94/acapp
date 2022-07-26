@@ -2,7 +2,7 @@ class GameMap extends AcGameObject {
     constructor(playground) {
         super();    // 调用基类的构造函数
         this.playground = playground;
-        this.$canvas = $(`<canvas></canvas>`);    // 创建画布
+        this.$canvas = $(`<canvas tabindex=0></canvas>`);    // 创建画布
         this.ctx = this.$canvas[0].getContext('2d');
         this.ctx.canvas.width = this.playground.width;
         this.ctx.canvas.height = this.playground.height;
@@ -11,7 +11,7 @@ class GameMap extends AcGameObject {
     }
 
     start() {
-
+        this.$canvas.focus();    // 聚焦
     }
 
     resize() {

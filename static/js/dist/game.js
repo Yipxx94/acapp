@@ -129,11 +129,92 @@ let AC_GAME_ANIMATION = function (timestamp) {
     requestAnimationFrame(AC_GAME_ANIMATION);
 }
 
-requestAnimationFrame(AC_GAME_ANIMATION);class GameMap extends AcGameObject {
+requestAnimationFrame(AC_GAME_ANIMATION);class ChatField {    // 不是画在canvas画布上，所以不需要继承自游戏对象
+    constructor(playground) {
+        this.playground = playground;
+
+        this.$history = $(`<div class="ac-game-chat-field-history"></div>`);
+        this.$input = $(`<input type="text" class="ac-game-chat-field-input">`);
+
+        this.$history.hide();
+        this.$input.hide();
+
+        this.func_id = null;
+
+        this.playground.$playground.append(this.$history);
+        this.playground.$playground.append(this.$input);
+
+        this.start();
+    }
+
+    start() {
+        this.add_listening_events();
+    }
+
+    add_listening_events() {
+        let outer = this;
+
+        this.$input.keydown(function(e) {
+            if (e.which === 27)    // esc
+            {
+                outer.hide_input();
+                return false;
+            }
+            else if (e.which === 13)    // enter
+            {
+                let username = outer.playground.root.settings.username;
+                let text = outer.$input.val();
+                if (text)
+                {
+                    outer.$input.val("");
+                    outer.add_message(username, text);
+                    outer.playground.mps.send_message(username, text);    // 向服务器发送消息事件
+                }
+                return false;    // 表示回车按键不向上传递
+            }
+        });
+    }
+
+    render_message(message) {
+        return $(`<div>${message}</div>`)
+    }
+
+    add_message(username, text) {
+        this.show_history();
+        let message = `[${username}]${text}`;
+        this.$history.append(this.render_message(message));
+        this.$history.scrollTop(this.$history[0].scrollHeight);
+    }
+
+    show_history() {
+        let outer = this;
+        this.$history.fadeIn();    // 慢慢出来
+
+        if (this.func_id)
+            clearTimeout(this.func_id);
+
+        this.func_id = setTimeout(function() {
+            outer.$history.fadeOut();
+            outer.func_id = null;
+        }, 3000);    // 3s 后关闭
+    }
+
+    show_input() {
+        this.show_history();
+        this.$input.show();
+        this.$input.focus();
+    }
+
+    hide_input() {
+        this.$input.hide();
+        this.playground.game_map.$canvas.focus();
+    }
+
+}class GameMap extends AcGameObject {
     constructor(playground) {
         super();    // 调用基类的构造函数
         this.playground = playground;
-        this.$canvas = $(`<canvas></canvas>`);    // 创建画布
+        this.$canvas = $(`<canvas tabindex=0></canvas>`);    // 创建画布
         this.ctx = this.$canvas[0].getContext('2d');
         this.ctx.canvas.width = this.playground.width;
         this.ctx.canvas.height = this.playground.height;
@@ -142,7 +223,7 @@ requestAnimationFrame(AC_GAME_ANIMATION);class GameMap extends AcGameObject {
     }
 
     start() {
-
+        this.$canvas.focus();    // 聚焦
     }
 
     resize() {
@@ -312,7 +393,7 @@ requestAnimationFrame(AC_GAME_ANIMATION);class GameMap extends AcGameObject {
         });
         this.playground.game_map.$canvas.mousedown(function(e) {
             if (outer.playground.state !== "fighting")
-                return false;    // 该事件不外传
+                return true;    // 不阻断该信息
 
             const rect = outer.ctx.canvas.getBoundingClientRect();    // 画布左上角
             if (e.which === 3)    // 鼠标右键
@@ -354,7 +435,23 @@ requestAnimationFrame(AC_GAME_ANIMATION);class GameMap extends AcGameObject {
             }
         });
 
-        $(window).keydown(function(e) {
+        this.playground.game_map.$canvas.keydown(function(e) {
+            if (e.which === 13)    // enter 键
+            {
+                if (outer.playground.mode === "multi mode")    // 打开聊天框
+                {
+                    outer.playground.chat_field.show_input();
+                    return false;
+                }
+            }
+            else if (e.which === 27)    // esc 键
+            {
+                if (outer.playground.mode === "multi mode")
+                {
+                    outer.playground.chat_field.hide_input();
+                    return false;
+                }
+            }
             if (outer.playground.state !== "fighting")
                 return true;
 
@@ -735,6 +832,8 @@ requestAnimationFrame(AC_GAME_ANIMATION);class GameMap extends AcGameObject {
                 outer.receive_attack(uuid, data.attackee_uuid, data.x, data.y, data.angle, data.damage, data.ball_uuid);
             else if (event === "flash")
                 outer.receive_flash(uuid, data.tx, data.ty);
+            else if (event === "message")
+                outer.receive_message(uuid, data.username, data.text);
         };
     }
 
@@ -850,6 +949,20 @@ requestAnimationFrame(AC_GAME_ANIMATION);class GameMap extends AcGameObject {
         if (player)
             player.flash(tx, ty);
     }
+
+    send_message(username, text) {
+        let outer = this;
+        this.ws.send(JSON.stringify({
+            'event': "message",
+            'uuid': outer.uuid,
+            'username': username,
+            'text': text,
+        }));
+    }
+
+    receive_message(uuid, username, text) {
+        this.playground.chat_field.add_message(username, text);
+    }
 }class AcGamePlayground {
     constructor(root) {
         this.root = root;
@@ -921,6 +1034,7 @@ requestAnimationFrame(AC_GAME_ANIMATION);class GameMap extends AcGameObject {
         }
         else if (mode === "multi mode")
         {
+            this.chat_field = new ChatField(this);
             this.mps = new MultiPlayerSocket(this);
             this.mps.uuid = this.players[0].uuid;
 
