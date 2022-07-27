@@ -19,11 +19,29 @@ class AcGamePlayground {
         return colors[Math.floor(Math.random() * 9)];
     }
 
+    create_uuid() {
+        let res = "";
+        for (let i = 0; i < 8; i ++ )
+        {
+            let x = parseInt(Math.floor(Math.random() * 10));
+            res += x;
+        }
+        return res;
+    }
+
     start() {
         let outer = this;
-        $(window).resize(function() {    // 监听窗口大小改变的事件
+        let uuid = this.create_uuid();
+        $(window).on(`resize.${uuid}`, function() {    // 监听窗口大小改变的事件
             outer.resize();
         });
+
+        if (this.root.AcWingOS)
+        {
+            this.root.AcWingOS.api.window.on_close(function() {
+                $(window).off(`resize.${uuid}`);
+            });
+        }
     }
 
     resize() {    // 联机对战，保持窗口16:9的比例不变
@@ -53,6 +71,7 @@ class AcGamePlayground {
 
         this.state = "waiting";    // waiting -> fighting -> over
         this.notice_board = new NoticeBoard(this);
+        this.score_board = new ScoreBoard(this);
         this.player_cnt = 0;
 
         this.resize();
@@ -80,6 +99,29 @@ class AcGamePlayground {
     }
 
     hide() {    // 关闭 playground 界面
+        while (this.players && this.players.length > 0)
+            this.players[0].destroy();
+
+        if (this.game_map)
+        {
+            this.game_map.destroy();
+            this.game_map = null;
+        }
+
+        if (this.notice_board)
+        {
+            this.notice_board.destroy();
+            this.notice_board = null;
+        }
+
+        if (this.score_board)
+        {
+            this.score_board.destroy();
+            this.score_board = null;
+        }
+
+        this.$playground.empty();
+
         this.$playground.hide();
     }
 }

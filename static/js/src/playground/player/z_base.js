@@ -246,12 +246,23 @@ class Player extends AcGameObject {
 
     update() {    // 每一帧都会执行
         this.invincible_time += this.timedelta / 1000;
-        this.update_move();
+
+        this.update_win();
 
         if (this.character === "me" && this.playground.state === "fighting")
             this.update_coldtime();
 
+        this.update_move();
+
         this.render();
+    }
+
+    update_win() {
+        if (this.playground.state === "fighting" && this.character === "me" && this.playground.players.length === 1)
+        {
+            this.playground.state === "over";
+            this.playground.score_board.win();
+        }
     }
 
     update_coldtime() {
@@ -263,7 +274,6 @@ class Player extends AcGameObject {
     }
 
     update_move() {    // 更新玩家移动
-
         if (this.invincible_time > 3 && Math.random() < 1 / 300.0)
         {
             let player = this.get_random_player();
@@ -373,7 +383,14 @@ class Player extends AcGameObject {
 
     on_destroy() {
         if (this.character === "me")
-            this.playground.state = "over";
+        {
+            if (this.playground.state === "fighting")
+            {
+                this.playground.state = "over";
+                this.playground.score_board.lose();
+            }
+        }
+
 
         for (let i = 0; i < this.playground.players.length; i ++ )
         {
