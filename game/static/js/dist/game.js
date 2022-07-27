@@ -24,6 +24,7 @@ class AcGameMenu {
 `);    // 创建一个HTML对象，menu
         this.$menu.hide();
         this.root.$ac_game.append(this.$menu);
+
         // 添加按钮
         this.$single_mode = this.$menu.find('.ac-game-menu-field-item-single-mode');
         this.$multi_mode = this.$menu.find('.ac-game-menu-field-item-multi-mode');
@@ -226,15 +227,26 @@ requestAnimationFrame(AC_GAME_ANIMATION);class ChatField {    // 不是画在can
         super();    // 调用基类的构造函数
         this.playground = playground;
         this.$canvas = $(`<canvas tabindex=0></canvas>`);    // 创建画布
+        this.$music=$(`<audio src="https://www.game.yexxweb.com/static/audio/bgMusic.mp3" loop="loop" autoplay="autoplay">`);
         this.ctx = this.$canvas[0].getContext('2d');
         this.ctx.canvas.width = this.playground.width;
         this.ctx.canvas.height = this.playground.height;
 
         this.playground.$playground.append(this.$canvas);    // 将画布加到 playground
+        $("head").append(this.$music);
+        this.music_play();
     }
 
     start() {
         this.$canvas.focus();    // 聚焦
+    }
+
+    music_play() {
+        this.$music[0].play();
+    }
+
+    music_stop() {
+        this.$music[0].pause();
     }
 
     resize() {
@@ -1157,6 +1169,7 @@ class FireBall extends AcGameObject {
 
         if (this.game_map)
         {
+            this.game_map.music_stop();
             this.game_map.destroy();
             this.game_map = null;
         }
@@ -1226,7 +1239,6 @@ class AcGameTutorial {
     add_listening_events() {
         let outer = this;
         this.$tutorial_back.click(function() {
-            console.log("click back");
             outer.hide();
             outer.root.menu.show();
         });
@@ -1383,9 +1395,7 @@ class AcGameTutorial {
            url: "https://www.game.yexxweb.com/settings/acwing/web/apply_code/",
             type: "GET",
             success: function(resp) {
-               console.log(resp);
                if (resp.result === "success")
-                   console.log(resp);
                    window.location.replace(resp.apply_code_url);    // 将当前页面重定向
             }
         });
@@ -1434,7 +1444,6 @@ class AcGameTutorial {
                 password: password,
             },
             success: function(resp) {
-                console.log(resp);
                 if (resp.result === "success")
                     location.reload();
                 else
@@ -1459,7 +1468,6 @@ class AcGameTutorial {
                 password_confirm: password_confirm,
             },
             success: function(resp) {
-                console.log(resp);
                 if (resp.result === "success")
                     location.reload();
                 else
@@ -1479,7 +1487,6 @@ class AcGameTutorial {
                 url: "https://www.game.yexxweb.com/settings/logout/",
                 type: "GET",
                 success: function(resp) {
-                    console.log(resp);
                     if (resp.result === "success")
                         location.reload();
                 }
@@ -1500,7 +1507,6 @@ class AcGameTutorial {
     acapp_login(appid, redirect_uri, scope, state) {
         let outer = this;
         this.root.AcWingOS.api.oauth2.authorize(appid, redirect_uri, scope, state, function(resp) {
-            console.log(resp);
             if (resp.result === "success")
             {
                 outer.username = resp.username;
@@ -1534,7 +1540,6 @@ class AcGameTutorial {
                 platform: outer.platform,
             },
             success: function(resp) {    // 请求之后的服务器的返回响应
-                console.log(resp);
                 if (resp.result == "success")    // 如果登录成功
                 {
                     outer.username = resp.username;

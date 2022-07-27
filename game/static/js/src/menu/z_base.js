@@ -24,6 +24,7 @@ class AcGameMenu {
 `);    // 创建一个HTML对象，menu
         this.$menu.hide();
         this.root.$ac_game.append(this.$menu);
+
         // 添加按钮
         this.$single_mode = this.$menu.find('.ac-game-menu-field-item-single-mode');
         this.$multi_mode = this.$menu.find('.ac-game-menu-field-item-multi-mode');

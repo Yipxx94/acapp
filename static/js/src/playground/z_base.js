@@ -104,6 +104,7 @@ class AcGamePlayground {
 
         if (this.game_map)
         {
+            this.game_map.music_stop();
             this.game_map.destroy();
             this.game_map = null;
         }

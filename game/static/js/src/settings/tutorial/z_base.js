@@ -46,7 +46,6 @@ class AcGameTutorial {
     add_listening_events() {
         let outer = this;
         this.$tutorial_back.click(function() {
-            console.log("click back");
             outer.hide();
             outer.root.menu.show();
         });
