@@ -133,7 +133,7 @@ class Settings {
         });
 
         this.$qq_login.click(function() {
-            console.log("click qq login");
+            outer.qq_login();
         });
     }
 
@@ -149,7 +149,15 @@ class Settings {
     }
 
     qq_login() {
-
+        $.ajax({
+            url : "https://www.game.yexxweb.com/settings/qq/apply_code/",
+            type : "GET",
+            success : function(resp) {
+                if(resp.result === "success") {
+                    window.location.replace(resp.apply_code_url);
+                }
+            }
+        })
     }
 
     add_listening_events_login() {
